@@ -1,15 +1,17 @@
 #include <iostream>
 #include <cmath>
 #include <fstream>
+#include <string>
+#include <string.h>
 using namespace std;
-double fu(double t){
+/*double fu(double t){
 	return a-u(t)+u(t)*u(t)*v(t);
-}
+}*/
 int main()
 {
     //Daklaration und Initialisierung der Variablen
     double a, b, uAnfang, vAnfang, u0, v0;
-    double deltat = 0.001, endzeit = 100;
+    double deltat = 0.001, endzeit = 10;
     double schrittzahl = endzeit/deltat;
     double uEuler[(int)schrittzahl], vEuler[(int)schrittzahl], uRunge[(int)schrittzahl], vRunge[(int)schrittzahl];
     for(int i=0;i<schrittzahl;i++){
@@ -42,6 +44,8 @@ int main()
     uRunge[0] = u0;
     vRunge[0] = v0;
 
+
+
     ofstream out("Ausgabe.dat");
     out << "#aktschritt \t uEuler \t vEuler \t uRunge \t vRunge" << endl;
     for(int aktschritt=0; aktschritt<schrittzahl; aktschritt++){
@@ -56,20 +60,21 @@ int main()
     	
 
 		//Runge-Kutta 4. Ordnung
-	double k1u = deltat*(a-uRunge[aktschritt]+uRunge[aktschritt]*uRunge[aktschritt]*vRunge[aktschritt]);		//Fehler: deltat/2. fehlt in der Auswertung der Funktion
-	double k2u = deltat*(a-uRunge[aktschritt]-k1u/2.+(uRunge[aktschritt]+k1u/2.)*(uRunge[aktschritt]+k1u/2.)*vRunge[aktschritt]);	//Fehler: Auswertung von vRunge
-	double k3u = deltat*(a-uRunge[aktschritt]-k2u/2.+(uRunge[aktschritt]+k2u/2.)*(uRunge[aktschritt]+k2u/2.)*vRunge[aktschritt]);
-	double k4u = deltat*(a-uRunge[aktschritt]-k3u+(uRunge[aktschritt]+k3u)*(uRunge[aktschritt]+k3u)*vRunge[aktschritt]);
-	uRunge[aktschritt+1]=uRunge[aktschritt]+(k1u+2*k2u+2*k3u+k4u)/6.;
+	double k1u = deltat*(a-uRunge[aktschritt]+uRunge[aktschritt]*uRunge[aktschritt]*vRunge[aktschritt]);
+	double k1v = deltat*(b-uRunge[aktschritt]*uRunge[aktschritt]*vRunge[aktschritt]);
+	double k2u = deltat*(a-uRunge[aktschritt]-k1u/2.+(uRunge[aktschritt]+k1u/2.)*(uRunge[aktschritt]+k1u/2.)*(vRunge[aktschritt]+k1v/2.));	
+	double k2v = deltat*(b-(vRunge[aktschritt]+k1v/2.)*(uRunge[aktschritt]+k1u/2.)*(uRunge[aktschritt]+k1u/2.));
+	double k3u = deltat*(a-uRunge[aktschritt]-k2u/2.+(uRunge[aktschritt]+k2u/2.)*(uRunge[aktschritt]+k2u/2.)*(vRunge[aktschritt]+k2v/2.));
+	double k3v = deltat*(b-(vRunge[aktschritt]+k2v/2.)*(uRunge[aktschritt]+k2u/2.)*(uRunge[aktschritt]+k2u/2.));
+	double k4u = deltat*(a-uRunge[aktschritt]-k3u+(uRunge[aktschritt]+k3u)*(uRunge[aktschritt]+k3u)*(vRunge[aktschritt]+k3v));
+	double k4v = deltat*(b-(vRunge[aktschritt]+k3v)*(uRunge[aktschritt]+k3u)*(uRunge[aktschritt]+k3u));
 	
-	double k1v = deltat*(b-uRunge[aktschritt]*uRunge[aktschritt]*vRunge[aktschritt]);            //Fehler: deltat/2. fehlt in der Auswertung der Funktion
-	double k2v = deltat*(b-(vRunge[aktschritt]+k1v/2.)*uRunge[aktschritt]*uRunge[aktschritt]);
-	double k3v = deltat*(b-(vRunge[aktschritt]+k2v/2.)*uRunge[aktschritt]*uRunge[aktschritt]);
-        double k4v = deltat*(b-(vRunge[aktschritt]+k3v)*uRunge[aktschritt]*uRunge[aktschritt]);
-        vRunge[aktschritt+1]=vRunge[aktschritt]+(k1u+2*k2u+2*k3u+k4u)/6.;
+	uRunge[aktschritt+1]=uRunge[aktschritt]+(k1u+2*k2u+2*k3u+k4u)/6.;
+	vRunge[aktschritt+1]=vRunge[aktschritt]+(k1v+2*k2v+2*k3v+k4v)/6.;
 	
 	out << uRunge[aktschritt] << "\t" << vRunge[aktschritt] << endl;
     
+   
     } 
 
     return 0;
