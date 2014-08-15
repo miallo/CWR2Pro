@@ -158,8 +158,8 @@ Die Bewegung von Teilchen zu bestimmen ist eine wichtige Voraussetzung um Progno
 Insbesondere ist es interessant (nicht nur für Chemiker) die Entwicklung der Dichte zweier verschiedener Stoffsorten, welche vermischt sind, zu beobachten, da diese in großem Maße für die Reaktionsfähigkeit entscheidend sind.
 Die Gleichungen, welche dieses System beschreiben lauten
 \begin{align}
-\frac{du(t)}{dt}&=a-u(t)+u^2(t)\cdot v(t)\\
-\frac{dv(t)}{dt}&=b-u^2(t)\cdot v(t)
+\frac{du(t)}{dt}&=a-u(t)+u^2(t)\cdot v(t)=f_u(u,t)\\
+\frac{dv(t)}{dt}&=b-u^2(t)\cdot v(t)=f_v(v,t)
 \end{align}
 wobei $u(t)$ und $v(t)$ die Dichten der beiden Molekülsorten sind und $a$ und $b$ zwei Konstanten, welche größer 0 sind. Außerdem kann die Dichte eines Stoffes natürlich nicht negativ werden, so dass $u(t)$ und $v(t)$ ebenfalls immer positiv sein müssen.\\
 
@@ -180,8 +180,8 @@ k_4&=\Delta t\cdot f(y_i+k_3,\, t_i+\Delta t)
 \end{align*}
 wobei $\dot y=f(y,t)$.
 
-\section{Durchführung}
-\label{sec:durchfuehrung}
+\section{Programmstruktur}
+Das Programm beginnt mit der Definition der beiden Funktionen
 
 \section{Auswertung}
 \label{sec:auswertung}

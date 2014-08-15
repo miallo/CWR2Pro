@@ -18,8 +18,8 @@ double fv(double b, double u, double v){
 int main()
 {
     //Deklaration und Initialisierung der Variablen
-    double a, b, uAnfang, vAnfang, u0, v0;
-    double deltat = 0.001, endzeit = 10;
+    double a=0, b=0, u0=0, v0=0;
+    double deltat = 0.001, endzeit = 100;
     double schrittzahl = endzeit/deltat;
     double uEuler[(int)schrittzahl], vEuler[(int)schrittzahl], uRunge[(int)schrittzahl], vRunge[(int)schrittzahl];
     for(int i=0;i<schrittzahl;i++){
@@ -29,23 +29,29 @@ int main()
 	    vRunge[i] = 0;
     }
     //Einlesen von Parametern und Anfangswerten
-    cout << "Parameter a: ";
-    cin  >> a;
-    cout << "Parameter b: ";
-    cin  >> b;
-    cout << "Anfangswert u (>0): ";
-    cin  >> u0;
-    while(u0<=0){
-	cout << "u muss immer Positiv sein" << endl;
-	cout << "Anfangswert u (>0): ";
-        cin  >> u0;
+    while(a<=0){
+	cout << "Parameter a (>0): ";
+	cin  >> a;
+	if(a<=0)
+		cout << "a muss immer Positiv sein" << endl;
     }
-    cout << "Anfangswert v (>0): ";
-    cin  >> v0;
+    while(b<=0){
+	cout << "Parameter b (>0): ";
+	cin  >> b;
+	if(b<=0)
+		cout << "b muss immer Positiv sein" << endl;
+    }
+    while(u0<=0){
+	cout << "Anfangswert u (>0): ";
+	cin  >> u0;
+	if(u0<=0)
+		cout << "u muss immer positiv sein" << endl;
+    }
     while(v0<=0){
-        cout << "v muss immer Positiv sein" << endl;
         cout << "Anfangswert v (>0): ";
         cin  >> v0;
+	if(v0<=0)
+		cout << "v muss immer Positiv sein" << endl;
     }
     uEuler[0] = u0;
     vEuler[0] = v0;
@@ -56,6 +62,7 @@ int main()
 
     ofstream out("Ausgabe.dat");
     out << "#aktschritt \t uEuler \t vEuler \t uRunge \t vRunge" << endl;
+    out << "# a=" << a << "\t b=" << b << "\t u0=" << u0 << "\t v0=" << v0 << endl; 
     for(int aktschritt=0; aktschritt<schrittzahl; aktschritt++){
         out << aktschritt << "\t";
 
@@ -63,7 +70,7 @@ int main()
 		//Euler-Cauchy-Algorithmus
 	uEuler[aktschritt+1]=uEuler[aktschritt]+(deltat*fu(a,uEuler[aktschritt],vEuler[aktschritt]));
 	vEuler[aktschritt+1]=vEuler[aktschritt]+(deltat*fv(b,uEuler[aktschritt],vEuler[aktschritt]));
-       	out << uEuler[aktschritt] << "\t" << vEuler[aktschritt] << "\t";
+	out << uEuler[aktschritt] << "\t" << vEuler[aktschritt] << "\t";
     	
 
 		//Runge-Kutta 4. Ordnung
@@ -75,12 +82,11 @@ int main()
 	double k3v = deltat*fv(b,uRunge[aktschritt]+k2u/2.,vRunge[aktschritt]+k2v/2.);
 	double k4u = deltat*fu(a,uRunge[aktschritt]+k3u,vRunge[aktschritt]+k3v);
 	double k4v = deltat*fv(b,uRunge[aktschritt]+k3u,vRunge[aktschritt]+k3v);
-	
 	uRunge[aktschritt+1]=uRunge[aktschritt]+(k1u+2*k2u+2*k3u+k4u)/6.;
 	vRunge[aktschritt+1]=vRunge[aktschritt]+(k1v+2*k2v+2*k3v+k4v)/6.;
 	
 	out << uRunge[aktschritt] << "\t" << vRunge[aktschritt] << endl;
-    
+   	cout << uRunge[aktschritt+1]-uEuler[aktschritt+1] << "\t" << vRunge[aktschritt+1]-vEuler[aktschritt+1] << endl; 
    
     } 
 
