@@ -181,13 +181,26 @@ k_4&=\Delta t\cdot f(y_i+k_3,\, t_i+\Delta t)
 wobei $\dot y=f(y,t)$.
 
 \section{Programmstruktur}
-Das Programm beginnt mit der Definition der beiden Funktionen
+Das Programm beginnt mit der Definition der beiden Funktionen $f_u$ und $f_v$, welche die jeweiligen Werte  aus den Daten von $u$ bzw. $v$ berechnen.
+In der \emph{main} werden zunächst die Variablen deklariert und soweit möglich initialisiert.
+Folgend werden die restlichen per Benutzereingabe eingelesen. Dabei wird auch überprüft, ob 
 
 \section{Auswertung}
 \label{sec:auswertung}
 
-\section{Diskussion}
-\label{sec:diskussion}
+\section{Stabilität der Algorithmen}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Größe um Abb nebeneinander%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[htb]
+  \centering
+   \subfigure[Runge-Kutta-Algorithmus 4. Ordnung\label{fig:label1}]
+   {\input{a001b099uv1R}}
+   \hfill
+   \subfigure[Vergleich Runge-Kutta-Algorithmus mit Euler bei identischen Randbedingungen\label{fig:label2}]
+   {\input{a001b099uv1ER}}
+   \caption{Unterschiedliche Algorithmen im Vergleich}
+   \label{fig:label-gesamt}
+ \end{figure}
+
 
 \begin{thebibliography}{1000}
 

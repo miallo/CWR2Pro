@@ -19,7 +19,7 @@ int main()
 {
     //Deklaration und Initialisierung der Variablen
     double a=0, b=0, u0=0, v0=0;
-    double deltat = 0.001, endzeit = 100;
+    double deltat = 0.1, endzeit = 500;
     double schrittzahl = endzeit/deltat;
     double uEuler[(int)schrittzahl], vEuler[(int)schrittzahl], uRunge[(int)schrittzahl], vRunge[(int)schrittzahl];
     for(int i=0;i<schrittzahl;i++){
@@ -33,25 +33,25 @@ int main()
 	cout << "Parameter a (>0): ";
 	cin  >> a;
 	if(a<=0)
-		cout << "a muss immer Positiv sein" << endl;
+		cout << "a muss immer Positiv sein!" << endl;
     }
     while(b<=0){
 	cout << "Parameter b (>0): ";
 	cin  >> b;
 	if(b<=0)
-		cout << "b muss immer Positiv sein" << endl;
+		cout << "b muss immer Positiv sein!" << endl;
     }
     while(u0<=0){
 	cout << "Anfangswert u (>0): ";
 	cin  >> u0;
 	if(u0<=0)
-		cout << "u muss immer positiv sein" << endl;
+		cout << "u muss immer positiv sein!" << endl;
     }
     while(v0<=0){
         cout << "Anfangswert v (>0): ";
         cin  >> v0;
 	if(v0<=0)
-		cout << "v muss immer Positiv sein" << endl;
+		cout << "v muss immer Positiv sein!" << endl;
     }
     uEuler[0] = u0;
     vEuler[0] = v0;
@@ -64,7 +64,7 @@ int main()
     out << "#aktschritt \t uEuler \t vEuler \t uRunge \t vRunge" << endl;
     out << "# a=" << a << "\t b=" << b << "\t u0=" << u0 << "\t v0=" << v0 << endl; 
     for(int aktschritt=0; aktschritt<schrittzahl; aktschritt++){
-        out << aktschritt << "\t";
+        out << aktschritt*deltat << "\t";
 
 
 		//Euler-Cauchy-Algorithmus
