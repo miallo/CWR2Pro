@@ -133,7 +133,7 @@
 Student: &  Michael Lohmann\\
 E-Mail: & m.lohmann@stud.uni-goettingen.de\\
 Betreuer: & Burkhard Blobel \\
-Versuchsdatum: & 26.05.2014\\
+Versuchsdatum: & 11.8.2014\\
 \end{tabular}
 \end{Large}
 
@@ -153,12 +153,33 @@ Versuchsdatum: & 26.05.2014\\
 
 \newpage
 
-\section{Einleitung}
-\label{sec:einleitung}
+\section{Aufgaben}
+Die Bewegung von Teilchen zu bestimmen ist eine wichtige Voraussetzung um Prognosen zu erstellen, wie sich ein System verhält.
+Insbesondere ist es interessant (nicht nur für Chemiker) die Entwicklung der Dichte zweier verschiedener Stoffsorten, welche vermischt sind, zu beobachten, da diese in großem Maße für die Reaktionsfähigkeit entscheidend sind.
+Die Gleichungen, welche dieses System beschreiben lauten
+\begin{align}
+\frac{du(t)}{dt}&=a-u(t)+u^2(t)\cdot v(t)\\
+\frac{dv(t)}{dt}&=b-u^2(t)\cdot v(t)
+\end{align}
+wobei $u(t)$ und $v(t)$ die Dichten der beiden Molekülsorten sind und $a$ und $b$ zwei Konstanten, welche größer 0 sind. Außerdem kann die Dichte eines Stoffes natürlich nicht negativ werden, so dass $u(t)$ und $v(t)$ ebenfalls immer positiv sein müssen.\\
 
-\section{Theorie}
-\label{sec:theorie}
-                                                                                                                                                                      
+
+\section{Runge-Kutta-Algorithmus}
+Der Runge-Kutta-Algorithmus ist ein Ansatz, Differentialgleichungen numerisch zu lösen.
+Er ist eine einfache und dabei relativ robuste Möglichkeit, Näherungen zu bekommen.
+Der wohl am häufigsten benutzte ist dabei derjenige 4. Ordnung.
+In der diskretisierten Form berechnet sich das folgende Glied aus dem vorherigen nach \cite[S.130]{scientificcomp} durch
+$$\shadowbox{$y_{i+1}=y_i+(k_1+2\cdot k_2+2\cdot k_3+k_4)/6$}$$ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Bachmann Landau Symbol%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+mit
+\begin{align*}
+k_1&=\Delta t\cdot f(y_i,\, t_i)\\
+k_2&=\Delta t\cdot f(y_i+k_1/2,\, t_i+\Delta t/2)\\
+k_3&=\Delta t\cdot f(y_i+k_2/2,\, t_i+\Delta t/2)\\
+k_4&=\Delta t\cdot f(y_i+k_3,\, t_i+\Delta t)
+\end{align*}
+wobei $\dot y=f(y,t)$.
+
 \section{Durchführung}
 \label{sec:durchfuehrung}
 
@@ -167,5 +188,13 @@ Versuchsdatum: & 26.05.2014\\
 
 \section{Diskussion}
 \label{sec:diskussion}
+
+\begin{thebibliography}{1000}
+
+\bibitem{scientificcomp} 
+	\textsc{J. Pitt-Francis and J. Whiteley} (2012): \emph{Guide To Scientific Computing in C++},
+	1. Auflage, Springer London
+
+\end{thebibliography}
 
 \end{document}
