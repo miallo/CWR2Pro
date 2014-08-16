@@ -61,7 +61,7 @@ int main()
     uRunge[0] = u0;
     vRunge[0] = v0;
 
-    b=0.7;
+    b=0.4;
     for(a=0.1;a<1;a+=0.1){
 
 
