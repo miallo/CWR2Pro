@@ -1,6 +1,9 @@
 #include <iostream>
 #include <cmath>
 #include <fstream>
+#include <sstream>
+#include <string>
+#include <string.h>
 using namespace std;
 
 
@@ -19,10 +22,10 @@ int main()
 {
     //Deklaration und Initialisierung der Variablen
     double a=0, b=0, u0=0, v0=0;
-    double deltat = 0.1, endzeit = 500;
+    double deltat = 0.001, endzeit = 100;
     double schrittzahl = endzeit/deltat;
     double uEuler[(int)schrittzahl], vEuler[(int)schrittzahl], uRunge[(int)schrittzahl], vRunge[(int)schrittzahl];
-    for(int i=0;i<schrittzahl;i++){
+    for(int i=0; i<schrittzahl; i++){
 	    uEuler[i] = 0;
 	    vEuler[i] = 0;
 	    uRunge[i] = 0;
@@ -58,9 +61,23 @@ int main()
     uRunge[0] = u0;
     vRunge[0] = v0;
 
+    b=0.7;
+    for(a=0.1;a<1;a+=0.1){
 
 
-    ofstream out("Ausgabe.dat");
+    string dateiname, as, bs, us, vs;
+    stringstream ass, bss, uss, vss;
+    ass << a;
+    bss << b;
+    uss << u0;
+    vss << v0;
+    as= ass.str();
+    bs = bss.str();
+    us= uss.str();
+    vs = vss.str();
+    dateiname = "a" + as + "b" + bs + "u" + us + "v" + vs + ".dat";
+
+    ofstream out (dateiname.c_str());
     out << "#aktschritt \t uEuler \t vEuler \t uRunge \t vRunge" << endl;
     out << "# a=" << a << "\t b=" << b << "\t u0=" << u0 << "\t v0=" << v0 << endl; 
     for(int aktschritt=0; aktschritt<schrittzahl; aktschritt++){
@@ -86,8 +103,8 @@ int main()
 	vRunge[aktschritt+1]=vRunge[aktschritt]+(k1v+2*k2v+2*k3v+k4v)/6.;
 	
 	out << uRunge[aktschritt] << "\t" << vRunge[aktschritt] << endl;
-   	cout << uRunge[aktschritt+1]-uEuler[aktschritt+1] << "\t" << vRunge[aktschritt+1]-vEuler[aktschritt+1] << endl; 
-   
+   	//cout << uRunge[aktschritt+1]-uEuler[aktschritt+1] << "\t" << vRunge[aktschritt+1]-vEuler[aktschritt+1] << endl; 
+    }
     } 
 
     return 0;
