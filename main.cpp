@@ -61,9 +61,9 @@ int main()
     uRunge[0] = u0;
     vRunge[0] = v0;
 
-    b=0.4;
+    /*b=0.4;
     for(a=0.1;a<1;a+=0.1){
-
+    */
 
     string dateiname, as, bs, us, vs;
     stringstream ass, bss, uss, vss;
@@ -104,7 +104,7 @@ int main()
 	
 	out << uRunge[aktschritt] << "\t" << vRunge[aktschritt] << endl;
    	//cout << uRunge[aktschritt+1]-uEuler[aktschritt+1] << "\t" << vRunge[aktschritt+1]-vEuler[aktschritt+1] << endl; 
-    }
+    /*}*/
     } 
 
     return 0;
