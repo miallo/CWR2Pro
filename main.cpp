@@ -141,7 +141,7 @@ int main()
             plot << "reset" << endl;
 	    //plot << "set yrange [0:2]" << endl
 	    plot<< "set title 'a" << a << " b=" << b << " u0=" << u0 << " v0=" << v0 << endl;
-            plot << "p '" << dateiname.c_str() << "' u 1:4" << endl << "pause 5";
+            plot << "p '" << dateiname.c_str() << "' u 1:4" << endl << "pause -1";
             plot.close();
             system("gnuplot plot.gp");
 	
