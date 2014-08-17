@@ -4,6 +4,8 @@
 #include <sstream>
 #include <string>
 #include <string.h>
+#include <cstdlib>
+#include <unistd.h>
 using namespace std;
 
 
@@ -31,7 +33,7 @@ int main()
 	    uRunge[i] = 0;
 	    vRunge[i] = 0;
     }
-    //Einlesen von Parametern und Anfangswerten
+/*    //Einlesen von Parametern und Anfangswerten
     while(a<=0){
 	cout << "Parameter a (>0): ";
 	cin  >> a;
@@ -56,6 +58,10 @@ int main()
 	if(v0<=0)
 		cout << "v muss immer Positiv sein!" << endl;
     }
+*/
+    u0=1;
+    v0=1;
+
 
     //Einsetzen der Startwerte in die erste Stelle des Arrays
     uEuler[0] = u0; 
@@ -63,11 +69,11 @@ int main()
     uRunge[0] = u0;
     vRunge[0] = v0;
 
-    /*
-     * //Schleife um verschiedene Parameter a zu konstanten b zu bekommen
-     * b=0.4;
-     * for(a=0.1;a<1;a+=0.1){
-     */
+    
+    //Schleife um verschiedene Parameter a zu konstanten b zu bekommen
+    b=0.4;
+    for(a=0.1;a<1;a+=0.1){
+    
     
 
     //Dateiname der Ausgabedatei aus Variablen zusammenbasteln
@@ -85,6 +91,7 @@ int main()
 
     //Datei öffnen und die ersten beiden Zeilen mit Beschriftungen und Parametern beschriften
     ofstream out (dateiname.c_str());
+    //ofstream out ("Ausgabe.dat");
     out << "#aktschritt \t uEuler \t vEuler \t uRunge \t vRunge" << endl;
     out << "# a=" << a << "\t b=" << b << "\t u0=" << u0 << "\t v0=" << v0 << endl;
 
@@ -124,7 +131,13 @@ int main()
 
     }
     out.close();
-    /*}*/ 
+    ofstream plot ("plot.gp");
+    plot << "reset" << endl << "p '" << dateiname.c_str() << "' u 1:4" << endl << "pause 1";
+    plot.close();
+    system("gnuplot plot.gp");
+    //sleep(1);
+
+    } 
 
     return 0;
 }
