@@ -63,21 +63,20 @@ int main()
     /*
     u0=1;
     v0=1;
-    */
-    
-    //Einsetzen der Startwerte in die erste Stelle des Arrays
-    uEuler[0] = u0; 
-    vEuler[0] = v0;
-    uRunge[0] = u0;
-    vRunge[0] = v0;
-    
-    /*
+        
     //Schleife um verschiedene Parameter a und b automatisch zu bekommen
     //MUSS AUSKOMMENTIERT WERDEN, wenn Nutzereingabe erwünscht, da Parameter überschrieben werden!
     for(b=0.1;b<1;b+=0.1){
         for(a=0.1;a<1;a+=0.1){
-    */        
-            
+    */
+
+
+    //Einsetzen der Startwerte in die erste Stelle des Arrays
+	    uEuler[0] = u0; 
+	    vEuler[0] = v0;
+	    uRunge[0] = u0;
+	    vRunge[0] = v0;
+        
             
             //Dateiname der Ausgabedatei aus Variablen zusammenbasteln
             string dateiname, as, bs, us, vs;
@@ -95,7 +94,7 @@ int main()
             //Datei öffnen und die ersten beiden Zeilen mit Beschriftungen und Parametern füllen
             ofstream out (dateiname.c_str());
             out << "#aktschritt \t uEuler \t vEuler \t uRunge \t vRunge" << endl;
-            out << "# a=" << a << "\t b=" << b << "\t u0=" << u0 << "\t v0=" << v0 << endl;
+            out << "#a=" << a << "\t b=" << b << "\t u0=" << u0 << "\t v0=" << v0 << endl;
             
             //Berechnung 
             for(int aktschritt=0; aktschritt<schrittzahl; aktschritt++){
@@ -136,16 +135,16 @@ int main()
 	    //Automatisches erstellen einer Rahmendatei für Gnuplot und anschließendes plotten
             ofstream plot ("plot.gp");
             plot << "reset" << endl;
-	    //plot << "set yrange [0:4]" << endl
+	    //plot << "set yrange [0:4]" << endl;
 	    plot<< "set title 'a" << a << " b=" << b << " u0=" << u0 << " v0=" << v0 << endl;
-            plot << "p '" << dateiname.c_str() << "' u 1:4" << endl << "pause 10"; //Wenn das Fenster immer geöffnet bleiben soll, ist die 10 zu ersetzen mit -1
+            plot << "p '" << dateiname.c_str() << "' u 1:4" << endl << "pause -1"; //Wenn das Fenster immer geöffnet bleiben soll, ist die 10 zu ersetzen mit -1
             plot.close();
             system("gnuplot plot.gp");
 	    //Will man eine flüssigere "Animation" haben, empfiehlt es sich, erst nur die Berechnungen machen zu lassen und danach nur die Plots auszugeben
 	
-	/*
-        } //Diese Klammern müssen beim automatischen Durchlauf einkommentiert sein
-    }*/
- 
+/*
+        } //Diese Klammern müssen beim normalen Durchlauf auskommentiert sein
+    }
+*/
     return 0;
 }

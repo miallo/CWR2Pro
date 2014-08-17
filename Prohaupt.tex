@@ -187,38 +187,84 @@ k_4&=\Delta t\cdot f(y_i+k_3,\, t_i+\Delta t)
 wobei $\dot y=f(y,t)$.\\
 Für kompliziertere Differentialgleichungen ist eventuell eine höhere Ordnung nötig, oder aber eine komplett andere Herangehensweise, die auch mit komplexeren DGLs zurechtkommt.
 Für viele Probleme reicht aber der Runge-Kutta-Algorithmus 4. Ordnung aus.\\
-Der Euler-Algorithmus berechnet den nächsten Schritt nur mit $y_{i+1}=y_i+k_1$ und ist dadurch in der Regel ungenauer (gleiche Ergebnisse lassen sich nur bei Funktionen mit konstanter Ableitung erwarten).
+Der Euler-Algorithmus berechnet den nächsten Schritt nur mit $y_{i+1}=y_i+k_1$ und ist dadurch in der Regel ungenauer (gleiche Ergebnisse lassen sich nur bei Funktionen mit konstanter Ableitung erwarten).\\\\
+In unserem Fall haben wir zwei gekoppelte Differentialgleichungen erster Ordnung.
+Bei der Berechnung der Koeffizienten muss hierbei darauf geachtet werden, dass sich beide Parameter mit fortlaufender Zeit ändern.
+In unserem Fall berechnen sie sich so:
+\begin{align*}
+k_{1_u}&=\Delta t\cdot f_u(u_i,\, v_i)\\
+k_{1_v}&=\Delta t\cdot f_u(v_i,\, u_i)\\
+k_{2_u}&=\Delta t\cdot f_u(u_i+k_{1_u}/2,\, v_i+k_{1_v}/2)\\
+k_{2_v}&=\Delta t\cdot f_v(v_i+k_{1_v}/2,\, u_i+k_{1_u}/2)\\
+k_{3_u}&=\Delta t\cdot f_u(u_i+k_{2_u}/2,\, v_i+k_{2_v}/2)\\
+k_{3_v}&=\Delta t\cdot f_v(v_i+k_{2_v}/2,\, u_i+k_{2_u}/2)\\
+k_{4_u}&=\Delta t\cdot f_u(u_i+k_{3_u},\, v_i+k_{3_v})\\
+k_{4_v}&=\Delta t\cdot f_v(v_i+k_{3_v},\, u_i+k_{3_u})
+\end{align*}
 
 \section{Programmstruktur}
 Das Programm beginnt mit der Definition der beiden Funktionen $f_u$ und $f_v$, welche die jeweiligen Werte aus den Daten von $u$ bzw. $v$ berechnen.
 In der \emph{main} werden zunächst die Variablen deklariert und soweit möglich initialisiert.
-Folgend werden die restlichen per Benutzereingabe eingelesen.
+Folgend werden die restlichen per Benutzereingabe eingelesen, so man nicht einen automatischen Durchlauf mit variablen Parametern wünscht und dies auskommentiert.
 Dabei wird auch überprüft, ob sie der Voraussetzung entsprechend $>0$ sind.
 Sollte dies nicht der Fall sein, so werden sie so lange erneut abgefragt, bis sie $>0$ sind.
 Sind alle 4 Werte korrekt eingegeben, so werden sie in die erste Stelle der Arrays eingetragen.
 Dies sind 4 Stück: je eins für $u$ und eins für $v$ zu den beiden Algorithmen.\\
-Eine zunächst auskommentierte Schleife beinhaltet die Möglichkeit, für ein festes $b$ zu verschiedenen Werten von $a$ die Berechnung  durchzuführen.\\
+Eine zunächst auskommentierte Schleife beinhaltet die Möglichkeit, für verschiedene $b$ und $a$ die Berechnung automatisiert durchzuführen.\\
 Im folgenden wird mit einer Hilfskonstruktion aus Stringstreams und Strings der Dateiname für die spätere Ausgabedatei erstellt.
 Diese wird nun zum Schreiben geöffnet und in ihre ersten beiden Zeilen werden die Beschriftungen der Spalten und die Startparameter eingetragen.\\
-Dann beginnt die Berechnung. Eine Schleife geht jeden Zeitschritt durch bis die Endzeit erreicht ist.
-Zunächst schreibt er in die erste Spalte den aktuellen Schritt.
-Aus diesem berechnet er den Wert für den darauf folgenden.
-Dabei berechnet er zunächst mit dem Euler-Verfahren und dann nach Runge-Kutta und schreibt die aktuellen Ergebnisse in die Ausgabedatei.\\
+Dann beginnt die Berechnung.
+Eine Schleife geht jeden Zeitschritt durch bis die Endzeit erreicht ist.
+Zunächst wird in die erste Spalte der aktuellen Schritt geschrieben.
+Aus diesem wird nun der Wert für den darauf folgenden berechnet.
+Dieser wird zunächst mit dem Euler-Verfahren und dann nach Runge-Kutta ausgewertet und die aktuellen Ergebnisse werden in die Ausgabedatei geschrieben.\\
 Da $u$ und $v$ des nächsten Schritts jedoch voneinander abhängen, kann der Runge-Kutta-Algorithmus nicht zunächst die eine und dann die andere Berechnung machen.
-Das Problem wurde dadurch gelöst, dass die Koeffizienten $k_{1_u}$ bis $k_{4_u}$ immer abwechselnd mit $k_{1_v}$ bis $k_{4_v}$ berechnet werden und die Zwischenergebnisse mit in die Berechnungen mit einfließen.
+Das Problem wird dadurch gelöst, dass die Koeffizienten $k_{1_u}$ bis $k_{4_u}$ immer abwechselnd mit $k_{1_v}$ bis $k_{4_v}$ berechnet werden und die Zwischenergebnisse mit in die nächste Berechnungen mit einfließen.
 Diese werden wie auch beim Euler-Verfahren jeweils mithilfe der als erstes im Programm definierten Funktionen $f_u$ und $f_v$ berechnet.
 Die dafür nötigen Werte werden ihnen übergeben und der Rückgabewert wird mit $\Delta t$ multipliziert um die Koeffizienten zu erhalten.
-Sind alle berechnet, so wird aus diesen der nächste Schritt berechnet.\\
-Wurden alle gefragten Zeitschritte berechnet, so wird die Datei geschlossen.
+Sind alle berechnet, so wird aus diesen der nächste Schritt berechnet.
+Wurden alle gefragten Zeitschritte berechnet, so wird die Datei geschlossen.\\
 Anschließend erstellt das Programm eine Rahmendatei für Gnuplot und führt diese aus.
-Nachdem der Plot für 10 Sekunden angezeigt wurde (unter Windows könnte das automatische Anzeigen nicht funktionieren, da meines Wissens nach Gnuplot nicht über die Konsole gesteuert wird) wird das Programm beendet.
-
+Nachdem der Plot für 10 Sekunden angezeigt wurde, (unter Windows könnte das automatische Anzeigen nicht funktionieren, da meines Wissens nach Gnuplot nicht über die Konsole gesteuert wird) wird das Programm beendet.
 
 
 
 \section{Auswertung}
 \label{sec:auswertung}
 Wie man in den Abb. \ref{b04u1v1} bis \ref{b07u1v1uv} sieht, nimmt mit größer werdendem Parameter $a$ nicht nur der Grenzwert von $u$ zu (von $v$ ab), sondern die Schwingung von $u$ und $v$ wird im Verlauf der Zeit deutlich schneller gedämpft.
+In den Abbildungen kann man auch gut erkennen, dass die Werte für $a=0.1$  durch ihren Verlauf herausstechen.
+Sie konvergieren nicht, sondern schwingen immer  und so gehe ich davon aus, dass für kleine $a$ der Algorithmus keine sinnvollen Ergebnisse bringt.
+Dies habe ich durch betrachten der Graphen für unterschiedliche Parameter ermittelt.
+Der Runge-Kutta-Algorithmus scheint jedoch für große $b$ stabiler zu sein und weniger fehleranfällig bezüglich dieses Problems.
+
+
+
+\section{Stabilität der Algorithmen}
+Es ist keinesfalls belibig, welchen Algorithmus man verwendet.
+Dies kann man insbesondere an der Abbildung \ref{fig:stabi} erkennen, welche in Teil a) für Schrittweiten von $\Delta t=0.1$ die Ergebnisse des Runge-Kutta-Algorithmus zu den Eingabewerten $a=0.01, b=0.99, u_0=v_0=1$ zeigt.
+Hierbei ist eine  deutliche Konvergenz zu einem  Grenzwert von 1 erkennen.
+Guckt man sich das zweite Bild an, welches zusätzlich noch für die selben Startwerte den Euler-Algorithmus auswertet, so erkennt man, dass komplett gegenteilige Aussagen entstehen.
+Der grün dargestellte Euler-Algorithmus divergiert bis er konstante Schwingungen bei einer Amplitude von 1.2 ausführt.\\
+Die Startwerte für diese Bilder habe ich durch wiederholtes Ausprobieren ermittelt, bis ein möglichst eindeutiges Bild entstand.
+
+
+
+\section{Mögliche Verbesserungen}
+Als zusätzliche Verbesserung des Runge-Kutta-Algorithmus 4. Ordnung mit konstanten Zeitschritten wäre es möglich, die Zeitschritte je nach Zeitpunkt unterschiedlich zu wählen.
+Es ist z.B. wichtig, wenn sich die Funktion schnell ändert, möglichst kleine Schritte zu machen.
+Ändert sich jedoch wenig, so ist eine kleine Schrittweite nur rechenintensiv und trägt nur unwesentlich zu einer genaueren Berechnung bei.
+
+\section*{Anhang}
+\begin{thebibliography}{1000}
+
+\bibitem{scientificcomp} 
+	\textsc{J. Pitt-Francis and J. Whiteley} (2012): \emph{Guide To Scientific Computing in C++},
+	1. Auflage, Springer London
+
+\end{thebibliography}
+
+
+
 \begin{figure}
 \centering
 \input{b04u1v1}
@@ -249,18 +295,8 @@ Wie man in den Abb. \ref{b04u1v1} bis \ref{b07u1v1uv} sieht, nimmt mit größer 
 \input{b07u1v1uv}
 \caption{b07uv}\label{b07u1v1uv}
 \end{figure}
-
-
-\section{Stabilität der Algorithmen}
-Es ist keinesfalls belibig, welchen Algorithmus man verwendet.
-Dies kann man insbesondere an der Abbildung \ref{fig:stabi} erkennen, welche in Teil a) für Schrittweiten von $\Delta t=0.1$ die Ergebnisse des Runge-Kutta-Algorithmus zu den Eingabewerten $a=0.01, b=0.99, u_0=v_0=1$ zeigt.
-Hierbei ist eine  deutliche Konvergenz zu einem  Grenzwert von 1 erkennen.
-Guckt man sich das zweite Bild an, welches zusätzlich noch für die selben Startwerte den Euler-Algorithmus auswertet, so erkennt man, dass komplett gegenteilige Aussagen entstehen.
-Der grün dargestellte Euler-Algorithmus divergiert bis er konstante Schwingungen bei einer Amplitude von 1.2 ausführt.\\
-Die Startwerte für diese Bilder habe ich durch wiederholtes Ausprobieren ermittelt, bis ein möglichst eindeutiges Bild entstand.
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Größe um Abb nebeneinander%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{figure}[htb]
+\begin{figure}
   \centering
    \subfigure[Runge-Kutta-Algorithmus 4. Ordnung\label{fig:stabirunge}]
    {\input{a001b099uv1R}}
@@ -270,19 +306,6 @@ Die Startwerte für diese Bilder habe ich durch wiederholtes Ausprobieren ermitt
    \caption{Unterschiedliche Algorithmen im Vergleich}
    \label{fig:stabi}
  \end{figure}
-
-
-\section{Mögliche Verbesserungen}
-Als zusätzliche Verbesserung des Runge-Kutta-Algorithmus 4. Ordnung mit konstanten Zeitschritten wäre es möglich, die Zeitschritte je nach Zeitpunkt unterschiedlich zu wählen.
-Es ist z.B. wichtig, wenn sich die Funktion schnell ändert, möglichst kleine Schritte zu machen.
-Ändert sich jedoch wenig, so ist eine kleine Schrittweite nur rechenintensiv und trägt nur unwesentlich zu einer genaueren Berechnung bei.
-
-\begin{thebibliography}{1000}
-
-\bibitem{scientificcomp} 
-	\textsc{J. Pitt-Francis and J. Whiteley} (2012): \emph{Guide To Scientific Computing in C++},
-	1. Auflage, Springer London
-
-\end{thebibliography}
-
+ 
+ 
 \end{document}
