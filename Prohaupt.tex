@@ -209,7 +209,9 @@ Das Problem wurde dadurch gelöst, dass die Koeffizienten $k_{1_u}$ bis $k_{4_u}
 Diese werden wie auch beim Euler-Verfahren jeweils mithilfe der als erstes im Programm definierten Funktionen $f_u$ und $f_v$ berechnet.
 Die dafür nötigen Werte werden ihnen übergeben und der Rückgabewert wird mit $\Delta t$ multipliziert um die Koeffizienten zu erhalten.
 Sind alle berechnet, so wird aus diesen der nächste Schritt berechnet.\\
-Wurden alle gefragten Zeitschritte berechnet, so wird die Datei geschlossen und das Programm beendet.
+Wurden alle gefragten Zeitschritte berechnet, so wird die Datei geschlossen.
+Anschließend erstellt das Programm eine Rahmendatei für Gnuplot und führt diese aus.
+Nachdem der Plot für 10 Sekunden angezeigt wurde (unter Windows könnte das automatische Anzeigen nicht funktionieren, da meines Wissens nach Gnuplot nicht über die Konsole gesteuert wird) wird das Programm beendet.
 
 
 
