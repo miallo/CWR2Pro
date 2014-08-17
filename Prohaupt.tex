@@ -122,7 +122,7 @@
 
 \rule{\textwidth}{1pt}\\[0.5cm]
 {\huge \bfseries
-  Abschlussarbeit\\[1.5ex]
+  CWR2 Abschlussarbeit\\[1.5ex]
   Projekt 5 - Chemische Kinetik}\\[0.5cm]
 \rule{\textwidth}{1pt}
 
@@ -133,7 +133,7 @@
 Student: &  Michael Lohmann\\
 E-Mail: & m.lohmann@stud.uni-goettingen.de\\
 Betreuer: & Burkhard Blobel \\
-Versuchsdatum: & 11.8.2014\\
+Abgabedatum: & 18.8.2014\\
 \end{tabular}
 \end{Large}
 
@@ -162,7 +162,7 @@ Die Gleichungen, welche dieses System beschreiben lauten
 \frac{dv(t)}{dt}&=b-u^2(t)\cdot v(t)=f_v(v,t)
 \end{align}
 wobei $u(t)$ und $v(t)$ die Dichten der beiden Molekülsorten sind und $a$ und $b$ zwei Konstanten, welche größer 0 sind. Außerdem kann die Dichte eines Stoffes natürlich nicht negativ werden, so dass $u(t)$ und $v(t)$ ebenfalls immer positiv sein müssen.\\
-
+Ein selbstgeschriebenes Programm soll die Startwerte und Parameter einlesen und daraus mithilfe des Euler- sowie des Runge-Kutta-Algorithmus die zeitliche Entwicklung berechnen.
 
 \section{Runge-Kutta-Algorithmus}
 Der Runge-Kutta-Algorithmus ist ein Ansatz, Differentialgleichungen numerisch zu lösen.
@@ -178,12 +178,33 @@ k_2&=\Delta t\cdot f(y_i+k_1/2,\, t_i+\Delta t/2)\\
 k_3&=\Delta t\cdot f(y_i+k_2/2,\, t_i+\Delta t/2)\\
 k_4&=\Delta t\cdot f(y_i+k_3,\, t_i+\Delta t)
 \end{align*}
-wobei $\dot y=f(y,t)$.
+wobei $\dot y=f(y,t)$.\\
+Für kompliziertere Differentialgleichungen ist eventuell eine höhere Ordnung nötig, oder aber eine komplett andere Herangehensweise, die auch mit komplexeren DGLs zurechtkommt.
+Für viele Probleme reicht aber der Runge-Kutta-Algorithmus 4. Ordnung aus.\\
+Der Euler-Algorithmus berechnet den nächsten Schritt nur mit $y_{i+1}=y_i+k_1$ und ist dadurch in der Regel ungenauer (gleiche Ergebnisse lassen sich nur bei konstanten Funktionen erwarten).
 
 \section{Programmstruktur}
-Das Programm beginnt mit der Definition der beiden Funktionen $f_u$ und $f_v$, welche die jeweiligen Werte  aus den Daten von $u$ bzw. $v$ berechnen.
+Das Programm beginnt mit der Definition der beiden Funktionen $f_u$ und $f_v$, welche die jeweiligen Werte aus den Daten von $u$ bzw. $v$ berechnen.
 In der \emph{main} werden zunächst die Variablen deklariert und soweit möglich initialisiert.
-Folgend werden die restlichen per Benutzereingabe eingelesen. Dabei wird auch überprüft, ob 
+Folgend werden die restlichen per Benutzereingabe eingelesen.
+Dabei wird auch überprüft, ob sie der Voraussetzung entsprechend $>0$ sind.
+Sollte dies nicht der Fall sein, so werden sie so lange erneut abgefragt, bis sie $>0$ sind.
+Sind alle 4 Werte korrekt eingegeben, so werden sie in die erste Stelle der Arrays eingetragen.
+Dies sind 4 Stück: je eins für $u$ und eins für $v$ zu den beiden Algorithmen.\\
+Eine zunächst auskommentierte Schleife beinhaltet die Möglichkeit, für ein festes $b$ zu verschiedenen Werten von $a$ die Berechnung  durchzuführen.\\
+Im folgenden wird mit einer Hilfskonstruktion aus Stringstreams und Strings der Dateiname für die spätere Ausgabedatei erstellt.
+Diese wird nun zum Schreiben geöffnet und in ihre ersten beiden Zeilen werden die Beschriftungen der Spalten und die Startparameter eingetragen.\\
+Dann beginnt die Berechnung. Eine Schleife geht jeden Zeitschritt durch bis die Endzeit erreicht ist.
+Zunächst schreibt er in die erste Spalte den aktuellen Schritt.
+Aus diesem berechnet er den Wert für den darauf folgenden.
+Dabei berechnet er zunächst mit dem Euler-Verfahren und dann nach Runge-Kutta und schreibt die aktuellen Ergebnisse in die Ausgabedatei.\\
+Da $u$ und $v$ des nächsten Schritts jedoch voneinander abhängen, kann der Runge-Kutta-Algorithmus nicht zunächst die eine und dann die andere Berechnung machen.
+Das Problem wurde dadurch gelöst, dass die Koeffizienten $k_{1_u}$ bis $k_{4_u}$ immer abwechselnd mit $k_{1_v}$ bis $k_{4_v}$ berechnet werden und die Zwischenergebnisse mit in die Berechnungen mit einfließen.
+Diese werden wie auch beim Euler-Verfahren jeweils mithilfe der als erstes im Programm definierten Funktionen $f_u$ und $f_v$ berechnet.
+Die dafür nötigen Werte werden ihnen übergeben und der Rückgabewert wird mit $\Delta t$ multipliziert um die Koeffizienten zu erhalten.
+Sind alle berechnet, so wird aus diesen der nächste Schritt berechnet.
+
+
 
 \section{Auswertung}
 \label{sec:auswertung}
@@ -221,18 +242,30 @@ Wie man in den Abb. \ref{b04u1v1} bis \ref{b07u1v1uv} sieht, nimmt mit größer 
 
 
 \section{Stabilität der Algorithmen}
+Es ist keinesfalls belibig, welchen Algorithmus man verwendet.
+Dies kann man insbesondere an der Abbildung \ref{fig:stabi} erkennen, welche in Teil a) für Schrittweiten von $\Delta t=0.1$ die Ergebnisse des Runge-Kutta-Algorithmus zu den Eingabewerten $a=0.01, b=0.99, u_0=v_0=1$ zeigt.
+Hierbei ist eine  deutliche Konvergenz zu einem  Grenzwert von 1 erkennen.
+Guckt man sich das zweite Bild an, welches zusätzlich noch für die selben Startwerte den Euler-Algorithmus auswertet, so erkennt man, dass komplett gegenteilige Aussagen entstehen.
+Der grün dargestellte Euler-Algorithmus divergiert bis er konstante Schwingungen bei einer Amplitude von 1.2 ausführt.\\
+Die Startwerte für diese Bilder habe ich durch wiederholtes Ausprobieren ermittelt, bis ein möglichst eindeutiges Bild entstand.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Größe um Abb nebeneinander%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}[htb]
   \centering
-   \subfigure[Runge-Kutta-Algorithmus 4. Ordnung\label{fig:label1}]
+   \subfigure[Runge-Kutta-Algorithmus 4. Ordnung\label{fig:stabirunge}]
    {\input{a001b099uv1R}}
    \hfill
-   \subfigure[Vergleich Runge-Kutta-Algorithmus mit Euler bei identischen Randbedingungen\label{fig:label2}]
+   \subfigure[Vergleich Runge-Kutta-Algorithmus mit Euler bei identischen Randbedingungen\label{fig:stabibeide}]
    {\input{a001b099uv1ER}}
    \caption{Unterschiedliche Algorithmen im Vergleich}
-   \label{fig:label-gesamt}
+   \label{fig:stabi}
  \end{figure}
 
+
+\section{Mögliche Verbesserungen}
+Als zusätzliche Verbesserung des Runge-Kutta-Algorithmus 4. Ordnung mit konstanten Zeitschritten wäre es möglich, die Zeitschritte je nach Zeitpunkt unterschiedlich zu wählen.
+Es ist z.B. wichtig, wenn sich schnell etwas ändert, möglichst kleine Schritte zu machen.
+Ändert sich jedoch wenig, so ist eine kleine Schrittweite nur rechenintensiv und trägt nur unwesentlich zu einer genaueren Berechnung bei.
 
 \begin{thebibliography}{1000}
 
