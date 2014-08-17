@@ -118,20 +118,23 @@
 \textsc{\Large Computergestütztes wissenschaftliches Rechnen der Fakultät für
   Physik,\\[1.5ex] Universität Göttingen}
 
-\vspace*{4.2cm}
+\vspace*{3.8cm}
 
 \rule{\textwidth}{1pt}\\[0.5cm]
 {\huge \bfseries
-  CWR2 Abschlussarbeit\\[1.5ex]
+  CWR2 Abschlussarbeit SoSe 2014\\[1.5ex]
   Projekt 5 - Chemische Kinetik}\\[0.5cm]
 \rule{\textwidth}{1pt}
 
-\vspace*{3.5cm}
+\vspace*{3cm}
 
 \begin{Large}
 \begin{tabular}{ll}
 Student: &  Michael Lohmann\\
+Matrikelnr.: & 2135 2626\\
 E-Mail: & m.lohmann@stud.uni-goettingen.de\\
+Dozent: & Dr. Salvatore R. Manmana\\
+ & Dr. Ulrich Welling\\
 Betreuer: & Burkhard Blobel \\
 Abgabedatum: & 18.8.2014\\
 \end{tabular}
@@ -155,14 +158,17 @@ Abgabedatum: & 18.8.2014\\
 
 \section{Aufgaben}
 Die Bewegung von Teilchen zu bestimmen ist eine wichtige Voraussetzung um Prognosen zu erstellen, wie sich ein System verhält.
-Insbesondere ist es interessant (nicht nur für Chemiker) die Entwicklung der Dichte zweier verschiedener Stoffsorten, welche vermischt sind, zu beobachten, da diese in großem Maße für die Reaktionsfähigkeit entscheidend sind.
-Die Gleichungen, welche dieses System beschreiben lauten
+Insbesondere ist es interessant (nicht nur für Chemiker) die Entwicklung der Dichte zweier verschiedener Stoffsorten, welche vermischt sind, zu beobachten, da diese in großem Maße für deren Reaktionsfähigkeit entscheidend sind.
+Die Gleichungen, welche dieses System beschreiben, lauten
 \begin{align}
 \frac{du(t)}{dt}&=a-u(t)+u^2(t)\cdot v(t)=f_u(u,t)\\
 \frac{dv(t)}{dt}&=b-u^2(t)\cdot v(t)=f_v(v,t)
 \end{align}
-wobei $u(t)$ und $v(t)$ die Dichten der beiden Molekülsorten sind und $a$ und $b$ zwei Konstanten, welche größer 0 sind. Außerdem kann die Dichte eines Stoffes natürlich nicht negativ werden, so dass $u(t)$ und $v(t)$ ebenfalls immer positiv sein müssen.\\
-Ein selbstgeschriebenes Programm soll die Startwerte und Parameter einlesen und daraus mithilfe des Euler- sowie des Runge-Kutta-Algorithmus die zeitliche Entwicklung berechnen.
+wobei $u(t)$ und $v(t)$ die Dichten der beiden Molekülsorten sind und $a$ und $b$ zwei Konstanten, welche größer 0 sind. Außerdem kann die Dichte eines Stoffes natürlich nicht negativ werden, so dass $u(t)$ und $v(t)$ ebenfalls immer positiv sein müssen.\\\\
+Ein selbstgeschriebenes Programm soll die Startwerte und Parameter einlesen und daraus mithilfe des Euler- sowie des Runge-Kutta-Algorithmus die zeitliche Entwicklung berechnen.\\
+Für ein fest gewähltes $b<1$ sollen für mehrere $a$ Diagramme erstellt werden, die $v(t)$ und $u(t)$ gegen $t$ auftragen, sowie eins, welches $u(t)$ gegen $v(t)$ darstellt.\\
+Des weiteren ist es interessant, für welche Parameter $a$ und $b$ es für große Zeiten zu periodischen Lösungen kommt.
+
 
 \section{Runge-Kutta-Algorithmus}
 Der Runge-Kutta-Algorithmus ist ein Ansatz, Differentialgleichungen numerisch zu lösen.
@@ -181,7 +187,7 @@ k_4&=\Delta t\cdot f(y_i+k_3,\, t_i+\Delta t)
 wobei $\dot y=f(y,t)$.\\
 Für kompliziertere Differentialgleichungen ist eventuell eine höhere Ordnung nötig, oder aber eine komplett andere Herangehensweise, die auch mit komplexeren DGLs zurechtkommt.
 Für viele Probleme reicht aber der Runge-Kutta-Algorithmus 4. Ordnung aus.\\
-Der Euler-Algorithmus berechnet den nächsten Schritt nur mit $y_{i+1}=y_i+k_1$ und ist dadurch in der Regel ungenauer (gleiche Ergebnisse lassen sich nur bei konstanten Funktionen erwarten).
+Der Euler-Algorithmus berechnet den nächsten Schritt nur mit $y_{i+1}=y_i+k_1$ und ist dadurch in der Regel ungenauer (gleiche Ergebnisse lassen sich nur bei Funktionen mit konstanter Ableitung erwarten).
 
 \section{Programmstruktur}
 Das Programm beginnt mit der Definition der beiden Funktionen $f_u$ und $f_v$, welche die jeweiligen Werte aus den Daten von $u$ bzw. $v$ berechnen.
@@ -202,13 +208,15 @@ Da $u$ und $v$ des nächsten Schritts jedoch voneinander abhängen, kann der Run
 Das Problem wurde dadurch gelöst, dass die Koeffizienten $k_{1_u}$ bis $k_{4_u}$ immer abwechselnd mit $k_{1_v}$ bis $k_{4_v}$ berechnet werden und die Zwischenergebnisse mit in die Berechnungen mit einfließen.
 Diese werden wie auch beim Euler-Verfahren jeweils mithilfe der als erstes im Programm definierten Funktionen $f_u$ und $f_v$ berechnet.
 Die dafür nötigen Werte werden ihnen übergeben und der Rückgabewert wird mit $\Delta t$ multipliziert um die Koeffizienten zu erhalten.
-Sind alle berechnet, so wird aus diesen der nächste Schritt berechnet.
+Sind alle berechnet, so wird aus diesen der nächste Schritt berechnet.\\
+Wurden alle gefragten Zeitschritte berechnet, so wird die Datei geschlossen und das Programm beendet.
+
 
 
 
 \section{Auswertung}
 \label{sec:auswertung}
-Wie man in den Abb. \ref{b04u1v1} bis \ref{b07u1v1uv} sieht, nimmt mit größer werdendem Parameter $a$ nicht nur der Grenzwert von $u$ zu (von $v$ ab), sondern die Schwingung von $u$ und $v$ wird im Verlauf der Zeit deutlich schneller abgebremst.
+Wie man in den Abb. \ref{b04u1v1} bis \ref{b07u1v1uv} sieht, nimmt mit größer werdendem Parameter $a$ nicht nur der Grenzwert von $u$ zu (von $v$ ab), sondern die Schwingung von $u$ und $v$ wird im Verlauf der Zeit deutlich schneller gedämpft.
 \begin{figure}
 \centering
 \input{b04u1v1}
@@ -264,7 +272,7 @@ Die Startwerte für diese Bilder habe ich durch wiederholtes Ausprobieren ermitt
 
 \section{Mögliche Verbesserungen}
 Als zusätzliche Verbesserung des Runge-Kutta-Algorithmus 4. Ordnung mit konstanten Zeitschritten wäre es möglich, die Zeitschritte je nach Zeitpunkt unterschiedlich zu wählen.
-Es ist z.B. wichtig, wenn sich schnell etwas ändert, möglichst kleine Schritte zu machen.
+Es ist z.B. wichtig, wenn sich die Funktion schnell ändert, möglichst kleine Schritte zu machen.
 Ändert sich jedoch wenig, so ist eine kleine Schrittweite nur rechenintensiv und trägt nur unwesentlich zu einer genaueren Berechnung bei.
 
 \begin{thebibliography}{1000}
