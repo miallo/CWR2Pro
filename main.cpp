@@ -71,8 +71,8 @@ int main()
 
     
     //Schleife um verschiedene Parameter a zu konstanten b zu bekommen
-    b=0.4;
-    for(a=0.1;a<1;a+=0.1){
+    for(b=0.1;b<1;b+=0.2){
+    for(a=0.1;a<1;a+=0.2){
     
     
 
@@ -132,11 +132,12 @@ int main()
     }
     out.close();
     ofstream plot ("plot.gp");
-    plot << "reset" << endl << "p '" << dateiname.c_str() << "' u 1:4" << endl << "pause 1";
+    plot << "reset" << endl << "p '" << dateiname.c_str() << "' u 1:4" << endl << "pause 0.7";
     plot.close();
     system("gnuplot plot.gp");
     //sleep(1);
 
+    }
     } 
 
     return 0;
