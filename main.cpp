@@ -33,32 +33,35 @@ int main()
         uRunge[i] = 0;
         vRunge[i] = 0;
     }
-    /*    //Einlesen von Parametern und Anfangswerten
+        //Einlesen von Parametern und Anfangswerten
+     	//Wenn Nutzereingabe erwünscht: Schleife um Programm auskommentieren!
+
     while(a<=0){
-    cout << "Parameter a (>0): ";
-    cin  >> a;
-    if(a<=0)
-        cout << "a muss immer Positiv sein!" << endl;
+    	cout << "Parameter a (>0): ";
+    	cin  >> a;
+    	if(a<=0)
+        	cout << "a muss immer Positiv sein!" << endl;
     }
     while(b<=0){
-    cout << "Parameter b (>0): ";
-    cin  >> b;
-    if(b<=0)
-        cout << "b muss immer Positiv sein!" << endl;
+    	cout << "Parameter b (>0): ";
+    	cin  >> b;
+    	if(b<=0)
+        	cout << "b muss immer Positiv sein!" << endl;
     }
     while(u0<=0){
-    cout << "Anfangswert u (>0): ";
-    cin  >> u0;
-    if(u0<=0)
-        cout << "u muss immer positiv sein!" << endl;
+    	cout << "Anfangswert u (>0): ";
+    	cin  >> u0;
+    	if(u0<=0)
+        	cout << "u muss immer positiv sein!" << endl;
     }
     while(v0<=0){
         cout << "Anfangswert v (>0): ";
         cin  >> v0;
-    if(v0<=0)
-        cout << "v muss immer Positiv sein!" << endl;
+    	if(v0<=0)
+        	cout << "v muss immer Positiv sein!" << endl;
     }
-    */
+    //Wenn automatischer Schleifendurchlauf erwünscht: bis hier auskommentieren
+
     u0=1;
     v0=1;
     
@@ -69,11 +72,12 @@ int main()
     uRunge[0] = u0;
     vRunge[0] = v0;
     
-    
+    /*
     //Schleife um verschiedene Parameter a zu konstanten b zu bekommen
-b=0.1;//    for(b=0.1;b<1;b+=0.1){
-        for(a=0.01;a<0.12;a+=0.01){
-            
+    //MUSS AUSKOMMENTIERT WERDEN, wenn Nutzereingabe erwünscht
+    for(b=0.1;b<1;b+=0.1){
+        for(a=0.1;a<1;a+=0.1){
+    */        
             
             
             //Dateiname der Ausgabedatei aus Variablen zusammenbasteln
@@ -131,35 +135,19 @@ b=0.1;//    for(b=0.1;b<1;b+=0.1){
                 
             }
             out.close();
-	    cout << a << endl;
-        }
-    //}
-    
-    //for(b=0.1;b<1;b+=0.1){
-      b=0.1;
-	for(a=0.01;a<0.12;a+=0.01){
-            string dateiname, as, bs, us, vs;
-            stringstream ass, bss, uss, vss;
-            ass << a;
-            bss << b;
-            uss << u0;
-            vss << v0;
-            as= ass.str();
-            bs = bss.str();
-            us= uss.str();
-            vs = vss.str();
-            dateiname = "a" + as + "b" + bs + "u" + us + "v" + vs + ".dat";
-            
-            //Automatisches erstellen einer Rahmendatei für Gnuplot und anschließendes plotten
+	    
+	    //Automatisches erstellen einer Rahmendatei für Gnuplot und anschließendes plotten
             ofstream plot ("plot.gp");
-            plot << "reset" << endl << "set yrange [0:2]" << endl << "set title 'a" << a << " b=" << b << " u0=" << u0 << " v0=" << v0 << endl;
-            plot << "p '" << dateiname.c_str() << "' u 1:4" << endl << "pause 0.5";
+            plot << "reset" << endl;
+	    //plot << "set yrange [0:2]" << endl
+	    plot<< "set title 'a" << a << " b=" << b << " u0=" << u0 << " v0=" << v0 << endl;
+            plot << "p '" << dateiname.c_str() << "' u 1:4" << endl << "pause 5";
             plot.close();
             system("gnuplot plot.gp");
-            //sleep(1);
-            
-        }
-    //} 
-    
+	
+	/*
+        } //Diese Klammern müssen beim automatischen Durchlauf einkommentiert sein
+    }*/
+ 
     return 0;
 }
