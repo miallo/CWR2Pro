@@ -19,4 +19,4 @@ Prohaupt.pdf: Prohaupt.tex
 	pdflatex Prohaupt.tex
 
 clean: 
-	rm -f $(PROG) *.o
+	rm -f $(PROG) *.o *.toc *.log

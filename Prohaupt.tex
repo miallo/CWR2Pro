@@ -46,6 +46,10 @@
 %Beipiel: \includegraphics[width=\textwidth]{grafik.png}
 \usepackage{graphicx}
 
+%Box um \input zu verkleinern
+%\begin{adjustbox}{width=\linewidth} . . . \end{adjustbox}
+\usepackage{adjustbox}
+
 % Text umfließt Graphiken und Tabellen
 % Beispiel:
 % \begin{wrapfigure}[Zeilenanzahl]{"l" oder "r"}{breite}
@@ -232,11 +236,11 @@ Nachdem der Plot für 10 Sekunden angezeigt wurde, (unter Windows könnte das au
 \section{Auswertung}
 \label{sec:auswertung}
 Wie man in den Abb. \ref{b04u1v1} bis \ref{b07u1v1uv} sieht, nimmt mit größer werdendem Parameter $a$ nicht nur der Grenzwert von $u$ zu (von $v$ ab), sondern die Schwingung von $u$ und $v$ wird im Verlauf der Zeit deutlich schneller gedämpft.
-In den Abbildungen kann man auch gut erkennen, dass die Werte für $a=0.1$  durch ihren Verlauf herausstechen.
-Sie konvergieren nicht, sondern schwingen immer  und so gehe ich davon aus, dass für kleine $a$ der Algorithmus keine sinnvollen Ergebnisse bringt.
-Dies habe ich durch betrachten der Graphen für unterschiedliche Parameter ermittelt.
-Der Runge-Kutta-Algorithmus scheint jedoch für große $b$ stabiler zu sein und weniger fehleranfällig bezüglich dieses Problems.
-
+In den Abbildungen kann man auch gut erkennen, dass die Werte für kleine $a$ durch ihren Verlauf herausstechen.
+Sie konvergieren nicht, sondern schwingen immer und so gehe ich davon aus, dass für kleine $a$ der Algorithmus keine sinnvollen Ergebnisse bringt.
+Für $b=0.8$ liegt diese Grenze bei ca. $a=0.09$ wohingegen sie für $b=0.4$ schon bei $a=0.2$ liegt
+Dies habe ich durch betrachten der Graphen für unterschiedlichste Parameter ermittelt.
+Der Runge-Kutta-Algorithmus scheint jedoch für große $b$ stabiler zu sein und weniger fehleranfällig bezüglich dieses Problems, da ein großes $b$ dämpfend wirkt.
 
 
 \section{Stabilität der Algorithmen}
@@ -263,46 +267,42 @@ Es ist z.B. wichtig, wenn sich die Funktion schnell ändert, möglichst kleine S
 
 \end{thebibliography}
 
+%b04
+\begin{figure}[htb]
+   \centering
+   \subfigure[$u:t$\label{b04u1v1}]
+   {\begin{adjustbox}{width=0.43\linewidth}\input{b04u1v1}\end{adjustbox}}
+   \hfill
+   \subfigure[$v:t$\label{b04u1v1v}]
+   {\begin{adjustbox}{width=0.43\linewidth}\input{b04u1v1v}\end{adjustbox}}
+   \hfill
+   \subfigure[$u:v$\label{b04u1v1uv}]
+   {\begin{adjustbox}{width=0.43\linewidth}\input{b04u1v1uv}\end{adjustbox}}
+   \caption{$u$ und $v$ gegen $t$ und $u$ gegen $v$ aufgetragen für $b=0.4$}
+   \label{fig:b04}
+ \end{figure}
 
+ \begin{figure}[htb]
+   \centering
+   \subfigure[$u:t$\label{b07u1v1}]
+   {\begin{adjustbox}{width=0.43\linewidth}\input{b07u1v1}\end{adjustbox}}
+   \hfill
+   \subfigure[$v:t$\label{b07u1v1v}]
+   {\begin{adjustbox}{width=0.43\linewidth}\input{b07u1v1v}\end{adjustbox}}
+   \hfill
+   \subfigure[$u:v$\label{b07u1v1uv}]
+   {\begin{adjustbox}{width=0.43\linewidth}\input{b07u1v1uv}\end{adjustbox}}
+   \caption{$u$ und $v$ gegen $t$ und $u$ gegen $v$ aufgetragen für $b=0.7$}
+   \label{fig:b07}
+ \end{figure}
 
-\begin{figure}
-\centering
-\input{b04u1v1}
-\caption{b04}\label{b04u1v1}
-\end{figure}
-\begin{figure}
-\centering
-\input{b04u1v1v}
-\caption{b04v}\label{b04u1v1v}
-\end{figure}
-\begin{figure}
-\centering
-\input{b04u1v1uv}
-\caption{b04uv}\label{b04u1v1uv}
-\end{figure}
-\begin{figure}
-\centering
-\input{b07u1v1}
-\caption{b07\label{b07u1v1}}
-\end{figure}
-\begin{figure}
-\centering
-\input{b07u1v1v}
-\caption{b07v\label{b07u1v1v}}
-\end{figure}
-\begin{figure}
-\centering
-\input{b07u1v1uv}
-\caption{b07uv}\label{b07u1v1uv}
-\end{figure}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Größe um Abb nebeneinander%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}
   \centering
    \subfigure[Runge-Kutta-Algorithmus 4. Ordnung\label{fig:stabirunge}]
-   {\input{a001b099uv1R}}
+   {\begin{adjustbox}{width=0.47\linewidth}\input{a001b099uv1R}\end{adjustbox}}
    \hfill
    \subfigure[Vergleich Runge-Kutta-Algorithmus mit Euler bei identischen Randbedingungen\label{fig:stabibeide}]
-   {\input{a001b099uv1ER}}
+   {\begin{adjustbox}{width=0.47\linewidth}\input{a001b099uv1ER}\end{adjustbox}}
    \caption{Unterschiedliche Algorithmen im Vergleich}
    \label{fig:stabi}
  \end{figure}
