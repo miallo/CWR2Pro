@@ -169,9 +169,11 @@ Die Gleichungen, welche dieses System beschreiben, lauten
 \frac{dv(t)}{dt}&=b-u^2(t)\cdot v(t)=f_v(v,t)
 \end{align}
 wobei $u(t)$ und $v(t)$ die Dichten der beiden Molekülsorten sind und $a$ und $b$ zwei Konstanten, welche größer 0 sind. Außerdem kann die Dichte eines Stoffes natürlich nicht negativ werden, so dass $u(t)$ und $v(t)$ ebenfalls immer positiv sein müssen.\\\\
-Ein selbstgeschriebenes Programm soll die Startwerte und Parameter einlesen und daraus mithilfe des Euler- sowie des Runge-Kutta-Algorithmus die zeitliche Entwicklung berechnen.\\
-Für ein fest gewähltes $b<1$ sollen für mehrere $a$ Diagramme erstellt werden, die $v(t)$ und $u(t)$ gegen $t$ auftragen, sowie eins, welches $u(t)$ gegen $v(t)$ darstellt.\\
-Des weiteren ist es interessant, für welche Parameter $a$ und $b$ es für große Zeiten zu periodischen Lösungen kommt.
+\begin{itemize}
+	\item Ein selbstgeschriebenes Programm soll die Startwerte und Parameter einlesen und daraus mithilfe des Euler- sowie des Runge-Kutta-Algorithmus die zeitliche Entwicklung berechnen.
+	\item Für ein fest gewähltes $b<1$ sollen für mehrere $a$ Diagramme erstellt werden, die $v(t)$ und $u(t)$ gegen $t$ auftragen, sowie eins, welches $u(t)$ gegen $v(t)$ darstellt.
+	\item Des weiteren ist es interessant, für welche Parameter $a$ und $b$ es für große Zeiten zu periodischen Lösungen kommt.
+\end{itemize}
 
 
 \section{Runge-Kutta-Algorithmus}
@@ -179,8 +181,7 @@ Der Runge-Kutta-Algorithmus ist ein Ansatz, Differentialgleichungen numerisch zu
 Er ist eine einfache und dabei relativ robuste Möglichkeit, Näherungen zu bekommen.
 Der wohl am häufigsten benutzte ist dabei derjenige 4. Ordnung.
 In der diskretisierten Form berechnet sich das folgende Glied aus dem vorherigen nach \cite[S.130]{scientificcomp} durch
-$$\shadowbox{$y_{i+1}=y_i+(k_1+2\cdot k_2+2\cdot k_3+k_4)/6$}$$ 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Bachmann Landau Symbol%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+$$\shadowbox{$y_{i+1}=y_i+(k_1+2\cdot k_2+2\cdot k_3+k_4)/6+\mathcal O(y_i^5)$}$$ 
 mit
 \begin{align*}
 k_1&=\Delta t\cdot f(y_i,\, t_i)\\
@@ -189,7 +190,7 @@ k_3&=\Delta t\cdot f(y_i+k_2/2,\, t_i+\Delta t/2)\\
 k_4&=\Delta t\cdot f(y_i+k_3,\, t_i+\Delta t)
 \end{align*}
 wobei $\dot y=f(y,t)$.\\
-Für kompliziertere Differentialgleichungen ist eventuell eine höhere Ordnung nötig, oder aber eine komplett andere Herangehensweise, die auch mit komplexeren DGLs zurechtkommt.
+Für kompliziertere Differentialgleichungen ist eventuell eine höhere Ordnung nötig, oder aber eine komplett andere Herangehensweise, die auch mit komplexeren DGL's zurechtkommt.
 Für viele Probleme reicht aber der Runge-Kutta-Algorithmus 4. Ordnung aus.\\
 Der Euler-Algorithmus berechnet den nächsten Schritt nur mit $y_{i+1}=y_i+k_1$ und ist dadurch in der Regel ungenauer (gleiche Ergebnisse lassen sich nur bei Funktionen mit konstanter Ableitung erwarten).\\\\
 In unserem Fall haben wir zwei gekoppelte Differentialgleichungen erster Ordnung.
@@ -216,7 +217,7 @@ Sind alle 4 Werte korrekt eingegeben, so werden sie in die erste Stelle der Arra
 Dies sind 4 Stück: je eins für $u$ und eins für $v$ zu den beiden Algorithmen.\\
 Eine zunächst auskommentierte Schleife beinhaltet die Möglichkeit, für verschiedene $b$ und $a$ die Berechnung automatisiert durchzuführen.\\
 Im folgenden wird mit einer Hilfskonstruktion aus Stringstreams und Strings der Dateiname für die spätere Ausgabedatei erstellt.
-Diese wird nun zum Schreiben geöffnet und in ihre ersten beiden Zeilen werden die Beschriftungen der Spalten und die Startparameter eingetragen.\\
+Diese wird nun zum Schreiben geöffnet und in ihre ersten beiden Zeilen werden die Beschriftungen der Spalten und die Startwerte und Parameter eingetragen.\\
 Dann beginnt die Berechnung.
 Eine Schleife geht jeden Zeitschritt durch bis die Endzeit erreicht ist.
 Zunächst wird in die erste Spalte der aktuellen Schritt geschrieben.
@@ -235,23 +236,58 @@ Nachdem der Plot für 10 Sekunden angezeigt wurde, (unter Windows könnte das au
 
 \section{Auswertung}
 \label{sec:auswertung}
-Wie man in den Abb. \ref{b04u1v1} bis \ref{b07u1v1uv} sieht, nimmt mit größer werdendem Parameter $a$ nicht nur der Grenzwert von $u$ zu (von $v$ ab), sondern die Schwingung von $u$ und $v$ wird im Verlauf der Zeit deutlich schneller gedämpft.
+Wie man in den Abb. \ref{fig:b04} und \ref{fig:b07} sieht, nimmt mit größer werdendem Parameter $a$ nicht nur der Grenzwert von $u$ zu (von $v$ ab), sondern die Schwingung von $u$ und $v$ wird im Verlauf der Zeit deutlich schneller gedämpft.
 In den Abbildungen kann man auch gut erkennen, dass die Werte für kleine $a$ durch ihren Verlauf herausstechen.
 Sie konvergieren nicht, sondern schwingen immer und so gehe ich davon aus, dass für kleine $a$ der Algorithmus keine sinnvollen Ergebnisse bringt.
 Für $b=0.8$ liegt diese Grenze bei ca. $a=0.09$ wohingegen sie für $b=0.4$ schon bei $a=0.2$ liegt
 Dies habe ich durch betrachten der Graphen für unterschiedlichste Parameter ermittelt.
 Der Runge-Kutta-Algorithmus scheint jedoch für große $b$ stabiler zu sein und weniger fehleranfällig bezüglich dieses Problems, da ein großes $b$ dämpfend wirkt.
 
-
+%b04
+\begin{figure}[h]
+   \centering
+   \subfigure[$u:t$\label{b04u1v1}]
+   {\begin{adjustbox}{width=0.43\linewidth}\input{b04u1v1}\end{adjustbox}}
+   \hfill
+   \subfigure[$v:t$\label{b04u1v1v}]
+   {\begin{adjustbox}{width=0.43\linewidth}\input{b04u1v1v}\end{adjustbox}}
+   \hfill
+   \subfigure[$u:v$\label{b04u1v1uv}]
+   {\begin{adjustbox}{width=0.43\linewidth}\input{b04u1v1uv}\end{adjustbox}}
+   \caption{$u$ und $v$ gegen $t$ und $u$ gegen $v$ aufgetragen für $b=0.4$}
+   \label{fig:b04}
+ \end{figure}
+%b07
+ \begin{figure}[h]
+   \centering
+   \subfigure[$u:t$\label{b07u1v1}]
+   {\begin{adjustbox}{width=0.43\linewidth}\input{b07u1v1}\end{adjustbox}}
+   \hfill
+   \subfigure[$v:t$\label{b07u1v1v}]
+   {\begin{adjustbox}{width=0.43\linewidth}\input{b07u1v1v}\end{adjustbox}}
+   \hfill
+   \subfigure[$u:v$\label{b07u1v1uv}]
+   {\begin{adjustbox}{width=0.43\linewidth}\input{b07u1v1uv}\end{adjustbox}}
+   \caption{$u$ und $v$ gegen $t$ und $u$ gegen $v$ aufgetragen für $b=0.7$}
+   \label{fig:b07}
+ \end{figure}
 \section{Stabilität der Algorithmen}
-Es ist keinesfalls belibig, welchen Algorithmus man verwendet.
+Es ist keinesfalls beliebig, welchen Algorithmus man verwendet.
 Dies kann man insbesondere an der Abbildung \ref{fig:stabi} erkennen, welche in Teil a) für Schrittweiten von $\Delta t=0.1$ die Ergebnisse des Runge-Kutta-Algorithmus zu den Eingabewerten $a=0.01, b=0.99, u_0=v_0=1$ zeigt.
 Hierbei ist eine  deutliche Konvergenz zu einem  Grenzwert von 1 erkennen.
 Guckt man sich das zweite Bild an, welches zusätzlich noch für die selben Startwerte den Euler-Algorithmus auswertet, so erkennt man, dass komplett gegenteilige Aussagen entstehen.
 Der grün dargestellte Euler-Algorithmus divergiert bis er konstante Schwingungen bei einer Amplitude von 1.2 ausführt.\\
 Die Startwerte für diese Bilder habe ich durch wiederholtes Ausprobieren ermittelt, bis ein möglichst eindeutiges Bild entstand.
-
-
+\begin{figure}[h]
+  \centering
+   \subfigure[Runge-Kutta-Algorithmus 4. Ordnung\label{fig:stabirunge}]
+   {\begin{adjustbox}{width=0.47\linewidth}\input{a001b099uv1R}\end{adjustbox}}
+   \hfill
+   \subfigure[Vergleich Runge-Kutta-Algorithmus mit Euler bei identischen Randbedingungen\label{fig:stabibeide}]
+   {\begin{adjustbox}{width=0.47\linewidth}\input{a001b099uv1ER}\end{adjustbox}}
+   \caption{Unterschiedliche Algorithmen im Vergleich}
+   \label{fig:stabi}
+ \end{figure}
 
 \section{Mögliche Verbesserungen}
 Als zusätzliche Verbesserung des Runge-Kutta-Algorithmus 4. Ordnung mit konstanten Zeitschritten wäre es möglich, die Zeitschritte je nach Zeitpunkt unterschiedlich zu wählen.
@@ -267,45 +303,7 @@ Es ist z.B. wichtig, wenn sich die Funktion schnell ändert, möglichst kleine S
 
 \end{thebibliography}
 
-%b04
-\begin{figure}[htb]
-   \centering
-   \subfigure[$u:t$\label{b04u1v1}]
-   {\begin{adjustbox}{width=0.43\linewidth}\input{b04u1v1}\end{adjustbox}}
-   \hfill
-   \subfigure[$v:t$\label{b04u1v1v}]
-   {\begin{adjustbox}{width=0.43\linewidth}\input{b04u1v1v}\end{adjustbox}}
-   \hfill
-   \subfigure[$u:v$\label{b04u1v1uv}]
-   {\begin{adjustbox}{width=0.43\linewidth}\input{b04u1v1uv}\end{adjustbox}}
-   \caption{$u$ und $v$ gegen $t$ und $u$ gegen $v$ aufgetragen für $b=0.4$}
-   \label{fig:b04}
- \end{figure}
 
- \begin{figure}[htb]
-   \centering
-   \subfigure[$u:t$\label{b07u1v1}]
-   {\begin{adjustbox}{width=0.43\linewidth}\input{b07u1v1}\end{adjustbox}}
-   \hfill
-   \subfigure[$v:t$\label{b07u1v1v}]
-   {\begin{adjustbox}{width=0.43\linewidth}\input{b07u1v1v}\end{adjustbox}}
-   \hfill
-   \subfigure[$u:v$\label{b07u1v1uv}]
-   {\begin{adjustbox}{width=0.43\linewidth}\input{b07u1v1uv}\end{adjustbox}}
-   \caption{$u$ und $v$ gegen $t$ und $u$ gegen $v$ aufgetragen für $b=0.7$}
-   \label{fig:b07}
- \end{figure}
 
-\begin{figure}
-  \centering
-   \subfigure[Runge-Kutta-Algorithmus 4. Ordnung\label{fig:stabirunge}]
-   {\begin{adjustbox}{width=0.47\linewidth}\input{a001b099uv1R}\end{adjustbox}}
-   \hfill
-   \subfigure[Vergleich Runge-Kutta-Algorithmus mit Euler bei identischen Randbedingungen\label{fig:stabibeide}]
-   {\begin{adjustbox}{width=0.47\linewidth}\input{a001b099uv1ER}\end{adjustbox}}
-   \caption{Unterschiedliche Algorithmen im Vergleich}
-   \label{fig:stabi}
- \end{figure}
- 
  
 \end{document}
